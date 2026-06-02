@@ -4,15 +4,18 @@ class User {
     this.email = email;
     this.points = 0;
     this.challenges = [];
+    this.workouts = [];
   }
   joinChallenge(challengeName) {
     this.challenges.push(challengeName);
     this.points += 10;
     return this.name + ' joined "' + challengeName + '" (+10 pts)';
   }
-  logWorkout(workoutName) {
-    this.points += 5;
-    return this.name + ' logged: ' + workoutName + ' (+5 pts)';
+  logWorkout(type, durationMinutes) {
+    const workout = new Workout(type, durationMinutes);
+    this.workouts.push(workout);
+    this.points += workout.points;
+    return this.name + ' logged: ' + workout.getSummary();
   }
   getProfile() {
     return {
@@ -23,15 +26,3 @@ class User {
     };
   }
 }
-
-// --- Test it out ---
-const alex = new User("Alex", "alex@email.com");
-const jordan = new User("Jordan", "jordan@email.com");
-
-console.log(alex.joinChallenge("30-day squat challenge"));
-console.log(alex.logWorkout("Morning run"));
-console.log(alex.logWorkout("Push-ups"));
-console.log(jordan.joinChallenge("30-day squat challenge"));
-
-console.log("\n--- Alex's profile ---");
-console.log(JSON.stringify(alex.getProfile(), null, 2));
